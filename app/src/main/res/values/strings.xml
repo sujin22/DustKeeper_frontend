@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DustKeeper</string>
+    <string name="title_home">홈</string>
+    <string name="title_challenge_list">챌린지 목록</string>
+    <string name="title_challenge_gallery">챌린지 갤러리</string>
+    <string name="title_mileage_shop">마일리지 샵</string>
+</resources>
