@@ -1,5 +1,7 @@
 package com.example.dustkeeper;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -125,7 +127,33 @@ public class FragmentMileageShop extends Fragment {
             ItemContainer.addView(ItemNameWrapper);
             ItemContainer.addView(OrgaNameWrapper);
 
+            ItemContainer.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    useMileage();
+                }
+            });
+
             ListContainer.addView(ItemContainer);
         }
+    }
+
+    void useMileage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("마일리지 사용");
+        builder.setMessage("물품을 수령하였습니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
     }
 }
