@@ -1,18 +1,12 @@
 package com.example.dustkeeper.retrofit;
 
 import com.example.dustkeeper.retrofit.model.ErrorResponse;
-import com.example.dustkeeper.retrofit.model.GetPolutionResponse;
-import com.example.dustkeeper.retrofit.model.GetPolutionRequest;
-import com.example.dustkeeper.retrofit.model.MyResponse;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Converter;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
