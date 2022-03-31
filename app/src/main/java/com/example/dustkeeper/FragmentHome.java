@@ -42,18 +42,50 @@ public class FragmentHome extends Fragment {
     private int degree;
     private int ult_degree;
 
+    ImageView image_cloud;
+    TextView string_state;
+    TextView dustDegree;
+    TextView ult_dustDegree;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         TextView string_place = (TextView) view.findViewById(R.id.tv_place);
-        ImageView image_cloud = (ImageView) view.findViewById(R.id.image_cloud);
-        TextView string_state = (TextView) view.findViewById(R.id.tv_state);
-        TextView dustDegree = (TextView) view.findViewById(R.id.tv_dustdegree);
-        TextView ult_dustDegree = (TextView) view.findViewById(R.id.tv_ultdustdegree);
+        image_cloud = (ImageView) view.findViewById(R.id.image_cloud);
+        string_state = (TextView) view.findViewById(R.id.tv_state);
+        dustDegree = (TextView) view.findViewById(R.id.tv_dustdegree);
+        ult_dustDegree = (TextView) view.findViewById(R.id.tv_ultdustdegree);
 
         getPolution();
 
+
+        return view;
+    }
+
+    public void getPolution(){
+        getRetrofitService().getPolution("관악구").enqueue(new Callback<GetPolutionResponse>(){
+            @Override
+            public void onResponse(Call<GetPolutionResponse> call, Response<GetPolutionResponse> response) {
+                if(response.isSuccessful()){
+                    GetPolutionResponse polutionResponse = response.body();
+                    degree = Integer.parseInt(polutionResponse.getDegree());
+                    ult_degree = Integer.parseInt(polutionResponse.getUlt_degree());
+
+                    setData();
+                    Log.d("HOME", "getPolution / onResponse: Success\n"+ "degree: "+degree+ "  ult_degree: " + ult_degree);
+                }else{
+                    Log.d("HOME", "getPolution / onResponse: Fail /");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetPolutionResponse> call, Throwable throwable) {
+                Log.d("HOME", "getPolution / onFailure: "+ throwable.getMessage());
+            }
+        });
+    }
+    public void setData(){
         if(degree>=0 && degree<=30){
             image_cloud.setImageDrawable(getResources().getDrawable(R.drawable.cloud_good));
             string_state.setText(R.string.state_good);
@@ -76,39 +108,5 @@ public class FragmentHome extends Fragment {
 
         dustDegree.setText(degree + "㎍/m³");
         ult_dustDegree.setText(ult_degree + "㎍/m³");
-        return view;
-    }
-
-    public void getPolution(){
-        GetPolutionRequest request = new GetPolutionRequest();
-        request.setStationName("종로구");
-        getRetrofitService().getPolution(request).enqueue(new Callback<GetPolutionResponse>(){
-            @Override
-            public void onResponse(Call<GetPolutionResponse> call, Response<GetPolutionResponse> response) {
-                if(response.isSuccessful()){
-                    GetPolutionResponse polutionResponse = response.body();
-                    degree = polutionResponse.getDegree();
-                    ult_degree = polutionResponse.getUlt_degree();
-                    Log.d("HOME", "getPolution / onResponse: Success\n"+ "degree: "+degree+ "  ult_degree: " + ult_degree);
-                }else{
-                    Log.d("HOME", "getPolution / onResponse: Fail /");
-
-//                    try {
-//                        ErrorResponse errorResponse = getErrorResponse(response.errorBody());
-//                        Log.d("HOME", "getPolution / onResponse: Fail\n"
-//                                + "code: "+errorResponse.getCode()
-//                                + "message: "+ errorResponse.getErrMessage()+ " "+ errorResponse.getReturnAuthMsg());
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetPolutionResponse> call, Throwable throwable) {
-                Log.d("HOME", "getPolution / onFailure: "+ throwable.getMessage());
-            }
-        });
     }
 }
